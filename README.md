@@ -1,34 +1,76 @@
-##Alexa Hue##
+# Alexa Hue
 
-###Control Hue Lights with Alexa###
+## Features Re-Implemented
+
+- [ ] Ask for Hue connection
+	- [ ] On app start
+	- [ ] On skill launch
+- [ ] Launch Intent
+	- [ ] Create and maintain session for next request
+	- [ ] Stop/Cancel Intent
+- [x] List Intents (send list as a card in Alexa app)
+	- [x] Scenes
+	- [x] Lights
+	- [x] Groups
+- [ ] Control Lights Intent
+	- [ ] Light/Group selection 
+		- [ ] If no light/group/scene specified, ask and wait for answer in same session
+			- [ ] Cancel/Stop Intent 
+		- [x] Substitute like(s)/light(s)
+		- [ ] lights => all lights
+		- [ ] Require "[name] light" or "[name] lights" or "[name] group"
+		- [ ] If no match, respond with that
+	- [ ] Light/Group Adjustment
+		- [x] Color
+			- [x] Dark/light (saturation 195, 220, 255)
+			- [x] Colors = {red: 65280, pink: 56100, purple: 52180, violet: 47188, blue: 46920, turquoise: 31146, green: 25500, yellow: 12750, orange: 8618}
+     	- [x] Color Temperature = {candle: 500, relax: 467, relaxing: 467, reading: 346, neutral: 300, concentrate: 231, energize: 136, energizing: 136}
+		- [x] Brightness
+		- [x] Saturation 
+		- [ ] On/Off
+		- [ ] Color loop
+			- [ ] long/short alert
+			- [ ] start/stop
+		- [ ] Alert
+			- [ ] Once (select)
+			- [ ] Repeating (lselect)
+			- [ ] Stop (none)
+		- [ ] Reset loop/alert/schedules
+	- [ ] Scenes
+		- [x] Set scene
+		- [x] Respond with failure if scene not found
+	- [ ] Fulfill command at later time
+		- [ ] Relative (in five minutes)
+		- [ ] Absolute (at 9pm)
+			- [ ] Prevent commands in the past
+	- [ ] Save scene
+
+## Control Hue Lights with Alexa
 
 Well, you already can turn them on and off and dim them with Alexa. But this Alexa program gives you much more control: change colors, recall scenes, save scenes, set timers, turn on dynamic effects (color loops and alerts) and, of course, turn them on and off and dim them.
 
-Demo here: https://youtu.be/JBZlaAQtOXQ
+Demo here: [https://youtu.be/JBZlaAQtOXQ](https://youtu.be/JBZlaAQtOXQ)
 
 Since Amazon does not give 3rd party developers a way to access your local network, we need a bit of a workaround. This skill has three components:
-
 
 1. An Amazon Alexa Lambda function -- thanks to [Matt Kruse](https://forums.developer.amazon.com/forums/profile.jspa?userID=13686) -- on AWS that just receives requests from....
 2. An Alexa "skill" that you set up in the Amazon Developer's portal and passes commands onto...
 3. A server on your local network that does have access your Hue Bridge.
 
-*Please note that Alexa-Hue requires a server running all the time (or all the time you want to control your lights with Alexa.)*
+> Please note that Alexa-Hue requires a server running all the time (or all the time you want to control your lights with Alexa.)*
 
 First, [download the .zip file](https://github.com/sarkonovich/Alexa-Hue/archive/master.zip) of this repo, and unzip it in a folder that's easy to get to.
 
-######Creating the Lambda Function
+### 1. Creating the Lambda Function
 For information on how to set up the Lambda function, look at the tutorial [here.](https://developer.amazon.com/public/community/post/TxDJWS16KUPVKO/New-Alexa-Skills-Kit-Template-Build-a-Trivia-Skill-in-under-an-Hour)
 
-Set up your developer account by following step #1. Then go through the instructions under step #2.
+- Set up your developer account by following step #1.
+- Go through the instructions under step #2.
+	- When you get to Step #2 5., you'll be copying and pasting in the text from `lambda_passthrough.js` that you downloaded from the repo. It's in the `lambda` subfolder. Add your code as Node.js. Just copy and paste lambda_passthrough.js in the code editor.
+- Continue through Step #2 12.
+- When you Step #3, follow the instructions under 1. and 2. to set up a new skill. Then follow my instructions below (though the pictures in Step #3 of the tutorial are relevant and might still be helpful.)
 
-When you get to Step #2 5., you'll be copying and pasting in the text from lambda_passthrough.js that you downloaded from the repo. (Remember, it's in that easy to get to folder.) Add your code as Node.js. Just copy and paste lambda_passthrough.js in the code editor.
-
-Continue through Step #2 12.
-
-When you Step #3, follow the instructions under 1. and 2. to set up a new skill. Then follow my instructions below (though the pictures in Step #3 of the tutorial are relevant and might still be helpful.)
-
-######Creating the Skill
+### 2. Creating the Skill
 
 To create your new skill, go to the [Amazon developer portal](https://developer.amazon.com/edw/home.html#/skills), and click on the "Add New Skill" button, up there in the top right.
 
@@ -42,76 +84,65 @@ To create your new skill, go to the [Amazon developer portal](https://developer.
 8. Copy/paste the contents of intent_schema.txt into the "Intent Schema" box.
 9. Copy/paste the contents of utterance_samples.txt into the "Sample Utterances" box.
 
-Now, for the custom slot values "LIGHTS" and "SCENES" substitute in the appropriate values for your lights and scenes. 
+> Now, for the custom slot values "LIGHTS" and "SCENES" substitute in the appropriate values for your lights and scenes. 
 
-**IMPORTANT NOTE:** When filling in the LIGHTS custom slot, single bulbs should be indicated by 'light' (e.g, "kitchen light") and groups with 'lights' (e.g., "living room lights.) This means that you *don't* want the actual name of your lights to be something like "Kitchen lights" or "Bedroom light," because then you'll have to say things like "Turn on the kitchen lights lights!" The name of the group/lights should just be "Kitchen" or "bedroom," and in the LIGHTS custom slot you'll enter "Kitchen lights" or "Bedroom light."
+> **IMPORTANT NOTE:** When filling in the LIGHTS custom slot, single bulbs should be indicated by 'light' (e.g, "kitchen light") and groups with 'lights' (e.g., "living room lights.) This means that you *don't* want the actual name of your lights to be something like "Kitchen lights" or "Bedroom light," because then you'll have to say things like "Turn on the kitchen lights lights!" The name of the group/lights should just be "Kitchen" or "bedroom," and in the LIGHTS custom slot you'll enter "Kitchen lights" or "Bedroom light."
 
-######Installing the Server
-Okay, now we're done with the "cloud" side of things. We need to set things up on your local network.
+### 3. Installing the Server
+Okay, now we're done with the "cloud" side of things. We need to set things up on your local network. You need some way to expose the server to the internets. I like to use an [ngrok](https://ngrok.com/) tunnel.
 
-There are two ways to set the server up. If you're running the server on Windows or OSX, the easiest way to get up and running is with a Docker containter. (Thanks to [jpeffer](https://hub.docker.com/r/jpeffer/docker-alexa-hue/) for the work on Windows and OSX! The container includes the correct version of Ruby and everything required to get the server talking to your skill.
+Download the appropriate version of the program, open up a **new** terminal window, and start it up like this:
 
-If you have a Raspberry Pi 3, you can  still use Docker, though there are a few additional steps required to get Docker running on a Pi 3. Thanks to [eschizoid](https://github.com/eschizoid) for the RaspberryPi build of Alexa Hue, and for the startup script.)
+````./ngrok http 4567````
 
-*You can also set up everything manually, skipping the Docker installation. (This is the only installation method available on Raspberry Pi 2 or earlier, and it still might be easier than using Docker on a Pi 3.) I've written some instructions for doing that [here](server_installation.md).*
+Andd you can add a bit of security by requiring basic auth credentials
 
-Docker Setup (for OSX, Windows, and Pi 3)
+````./ngrok http -auth="username:password" 4567````
 
-For *Windows and OSX*, install the correct version of [Docker Toolbox](https://www.docker.com/products/docker-toolbox) for your OS.
+If using ngrok, you'll end up looking at something like this, which is the public IP address of the tunnel to your local server.
+                                                                                    
+````Forwarding  http://bb1bde4a.ngrok.io -> localhost:4567````
+   
+Finally, head back to the lambda function on aws and replace the application_id and url with the application_id of your skill (found in the developer portal) and the ip address of your server (e.g., the ip address of your ngrok tunnel.) So, line 9 (or so) of the Lambda function might look something like this:
 
--- The default installation settings most likely adequate.
+```` 'amzn1.echo-sdk-ams.app.3be28e92-xxxx-xxxx-xxxx-xxxxxxxxxxxx':'http://username:password@bb1bde4a.ngrok.io/lights' ````
 
--- Select "Yes" if prompted to install additional drivers.
+(If you end up using this a lot, it would probably make sense to pay ngrok $5 and get a reserved address for you tunnel. That way you won't have to change the lambda function everytime you restart the ngrok tunnel.)
 
-*If you're installing Docker on a Rapsberry Pi 3*, look at the instructions [here](http://blog.hypriot.com/post/run-docker-rpi3-with-wifi/). 
-Assuming you've got a copy of Raspbian Jessie running on your Pi, scroll down to the instructions in the **Installing Docker** section. That's all you need to worry about.
+If you've added some basic auth to the tunnel, use the following format to specify the route to your local server in the lambda function:
 
-Once you've got Docker properly installed:
-
-On Windows or OSX, open the Docker Quickstart Terminal (again, select "Yes" if prompted). On a Pi 3, open a terminal window in the folder where you unzipped the repo contents. Now, run a command of the following form: 
-
-````bash start.sh <timezone> <win|mac|pi>````
-
-Supply the timezone and platform paratmeters that you want to use. (There's a list of time zone codes at the end of this readme.) So, if you're running your server on OSX, and your timezone is PDT, your command will look like:
-
-````bash start.sh "America/Los_Angeles" mac````
-
-If all goes well, you should end up looking at a screen with information like this on it:
-
-````Forwarding  http://2a52d01e.ngrok.io -> docker-alexa-hue:4567````
-
-````Forwarding  https://2a52d01e.ngrok.io -> docker-alexa-hue:4567````
-
-(If all doesn't go well, and you get an error like: "Unable to connect to Docker Daemon", try ````sudo bash start.sh <timezone> <win|mac|pi>````
+    http://username:password@bb1bde4a.ngrok.io/
 
 Head back to the lambda function on aws and replace the application_id and url with the application_id of your skill (found in the developer portal) and the ip address of your server (e.g., the ip address of your ngrok tunnel.) So, line 9 (or so) of the Lambda function might look something like this:
 
-```` 'amzn1.echo-sdk-ams.app.3be28e92-xxxx-xxxx-xxxx-xxxxxxxxxxxx':'http://2a52d01e.ngrok.io/lights' ````
-
-(Don't forget to at ' /lights ' to the end of the URL)
+```` 'amzn1.echo-sdk-ams.app.3be28e92-xxxx-xxxx-xxxx-xxxxxxxxxxxx':'http://2a52d01e.ngrok.io/' ````
 
 
-######Almost done!!!!
+### Connect to Hue bridge
 
 Before you can use the skill, you'll need to give it access to your Hue bridge. Press the link button on your bridge and launch the skill (within, I think, 30 seconds or so.)
 
 If you don't do this step, Alexa will remind you.
 
+## All Done!
+
+## Available Commands
+
 At this point the skill should be available to you. You can say things like:
 
-*"Alexa, tell [whatever invocation name you chose] to turn the kitchen lights blue."*
+*"Alexa, tell [invocation name] to turn the kitchen lights blue."*
 
-*"Alexa, ask [whatever invocation name you chose] for blue kitchen lights."*
+*"Alexa, ask [invocation name] for blue kitchen lights."*
 
-*"Alexa, ask [whatever invocation name you chose] for a dark red bedside light."*
+*"Alexa, ask [invocation name] for a dark red bedside light."*
 
-*"Alexa, ask [whatever invocation name you chose] to set romantic scene."*
+*"Alexa, ask [invocation name] to set romantic scene."*
 
-*"Alexa, ask [whatever invocation name you chose] for romantic scene."*
+*"Alexa, ask [invocation name] for romantic scene."*
 
-*"Alexa, ask [whatever invocation name you chose] for a green bedside light."*
+*"Alexa, ask [invocation name] for a green bedside light."*
 
-*"Alexa, tell [whatever invocation name you chose] to turn the bedroom lights dark red."*
+*"Alexa, tell [invocation name] to turn the bedroom lights dark red."*
 
 *"Alexa, tell...set the floor light to saturation ten and brightness five"*
 
@@ -133,7 +164,7 @@ At this point the skill should be available to you. You can say things like:
 
 Preprogrammed colors include pink, orange, green, red, turqoise, blue, purple, and violet. All these colors accept the modifiers "dark" and "light" (e.g., "dark blue", "light pink."). You can also specify the following mired colors: candle, relax, reading, neutral, concentrate, and energize.
 
-####Groups and Scenes####
+## Groups and Scenes
 
 Alexa Hue gets information about groups and scenes from your Hue Bridge. You can get information about what groups, scenes, and lights you have on the bridge just by asking. The relevant information will be sent to a card in your Alexa app:
 
@@ -147,7 +178,7 @@ There are a few things to keep in mind. First, the Alexa app stores groups local
 
 There are two solutions.
 
-The first is to find an app that a) stores the scene on the bridge and b) doesn't mess with the name. I recommend "All 4 Hue" available for [Android.](https://play.google.com/store/apps/details?id=de.renewahl.all4hue&hl=en), but I assume many others will work as well. (Note: the official hue app is **not** one of the them.)
+The first is to find an app that a) stores the scene on the bridge and b) doesn't mess with the name. I recommend "All 4 Hue" available for [Android](https://play.google.com/store/apps/details?id=de.renewahl.all4hue&hl=en), but I assume many others will work as well. (Note: the official hue app is **not** one of the them.)
 
 Create a scene in an app that meets requirements a) and b) and then add the scene name as a value in the SCENES custom slot.
 (You can tell if the application stored the scene correctly on the bridge by asking the skill for your scenes, and making sure that the scene shows up with the name you expect.)
@@ -164,48 +195,6 @@ This method is probably not as reliable as the first, but it works. It will work
 
 **Why do I have to keep adding the names of the scenes/groups in the developer's portal?** I have not included lots and lots of sample utterances or custom slot values. Because of this, the voice recognition for arbitrary words will not be very good. However, the recognition for the supplied values will be very, very good. (It's a trade off.) Since you you using this to control just your lights, there's no need for the program to recognize just anything you say. *Remember*, even if you add scenes with an app, recognition will be much better if you add the scene (and group, and light) names as values in the relevant custom slot.
 
-**Alexa keeps saying she can't find a group (light, or scene) named "Marks Room" even though I know there it exists?**  This is likely a voice recognitions problem. Look in the settings tab of the Alexa app, under history. There you can see exactly what Alexa heard for everthing you say. Perhaps she heard "Marcs room"? This shouldn't happen if you've added the name of the light/group/scene as a value in the relevant custom slot, but who knows? Alexa is not constrained to recognize only those values
+**Alexa keeps saying she can't find a group (light, or scene) named "Marks Room" even though I know it exists?**  This is likely a voice recognitions problem. Look in the settings tab of the Alexa app, under history. There you can see exactly what Alexa heard for everthing you say. Perhaps she heard "Marcs room"? This shouldn't happen if you've added the name of the light/group/scene as a value in the relevant custom slot, but who knows? Alexa is not constrained to recognize only those values
 
 **Alexa keeps asking me to specify a light or lights, but I did.** Again, this is likely a recognition problem. Check that she heard what you correctly. For example, she might be hearing "recipe like" instead of "recipe light." I've taken care of a couple common mistakes in the app (you can say "turn on the bedroom like" and it will still work), but there might be others. In the history section of the app you can give feedback and tell Alexa that she misheard. If you do this a few times, she usually corrects the error.
-
-====================
-Some Common TZ Codes
-
-
-For the Docker installation, you need to replace the value of the "TZ=" parameter with the time zone name that matches your location. For example ````TZ=America/Los_Angeles````
-
-More complete information [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-
-America/New_York
-
-America/Chicago
-
-America/Denver
-
-America/Los_Angeles
-
-America/Phoenix
-
-America/Indiana/Indianapolis
-
-America/Indiana/Tell_City
-
-America/Indiana/Petersburg
-
-America/Indiana/Knox
-
-America/Indiana/Winamac
-
-America/Indiana/Vevay
-
-America/Kentucky/Louisville
-
-America/Kentucky/Monticello
-
-America/Detroit
-
-America/Menominee
-
-America/Anchorage
-
-Pacific/Honolulu

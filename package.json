@@ -1,0 +1,14 @@
+{
+  "name": "alexa-hue-skill",
+  "version": "0.1.0",
+  "description": "Server to receive requests from Alexa skill and send them to a Philips Hue system",
+  "dependencies": {
+    "node-hue-api": "2.3.0",
+    "typescript": "2.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "6.0.45"
+  },
+  "private": true,
+  "main": "app.js"
+}

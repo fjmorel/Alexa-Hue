@@ -6,12 +6,9 @@ ControlLights set seen {Scene}
 ControlLights set scene {Scene}
 ControlLights set the seen {Scene}
 ControlLights set the scene {Scene}
-
+ControlLights set the {Scene}
 ControlLights for {Scene} seen
 ControlLights for the scene {Scene}
-ControlLights for {Color} {Lights}
-ControlLights for a {Color} {Lights}
-ControlLights {Color} {Lights}
 
 ControlLights save scene as {romantic|SaveScene}
 ControlLights save scene as {summer dawn|SaveScene}
@@ -26,6 +23,10 @@ ControlLights save scene as {night time reading|SaveScene} on {Lights}
 ControlLights schedule {Scene} scene at {AbsoluteTime}
 ControlLights schedule {Scene} seen at {AbsoluteTime}
 
+ControlLights change to {Color}
+ControlLights for {Color} {Lights}
+ControlLights for a {Color} {Lights}
+ControlLights {Color} {Lights}
 ControlLights turn the {Lights} {Color}
 ControlLights turn the {Lights} to {Color}
 ControlLights turn the {Lights} to the {Color}
@@ -65,38 +66,38 @@ ControlLights dim the {Lights} to brightness {Brightness}
 ControlLights {Lights} saturation {Saturation} 
 ControlLights set the {Lights} to saturation {Saturation}
 
-
 ControlLights set the {Lights} to the color {Color} and saturation {Saturation}
 ControlLights set the {Lights} to the color {Color} and brightness {Brightness} 
 ControlLights set the {Lights} to the color {Color} and saturation {Saturation} in {RelativeTime}
 ControlLights set the {Lights} to the color {Color} and brightness {Brightness} in {RelativeTime}
 
-ControlLights {start|Event} {Alert} on the {Lights}
-ControlLights {stop|Event} {Alert} on the {Lights}
+ControlLights {Event} {Alert} on the {Lights}
+ControlLights {Event} {Alert} on {Lights}
 ControlLights {Alert} on the {Lights}
-ControlLights {start|Event} {Alert}
-ControlLights {stop|Event} {Alert}
-ControlLights {start|Event} {Alert} on the {Lights} in {RelativeTime}
-ControlLights {start|Event} {Alert} on the {Lights} in {AbsoluteTime}
-ControlLights {stop|Event} {Alert} on the {Lights} in {RelativeTime}
-ControlLights {stop|Event} {Alert} on the {Lights} in {AbsoluteTime}
+ControlLights {Alert} on {Lights}
+ControlLights {Event} {Alert}
+ControlLights {Event} {Alert} on {Lights} in {RelativeTime}
+ControlLights {Event} {Alert} on {Lights} in {AbsoluteTime}
+ControlLights {Event} {Alert} on the {Lights} in {RelativeTime}
+ControlLights {Event} {Alert} on the {Lights} in {AbsoluteTime}
 
 ListScenes what are my scenes
 ListScenes what scenes do I have
 ListScenes give me my scenes
 ListScenes list my scenes
+ListScenes for my scenes
 
 ListGroups what are my groups
 ListGroups what groups do I have
 ListGroups give me my groups
 ListGroups list my groups
+ListScenes for my groups
 
 ListLights what are my lights
 ListLights what lights do I have
 ListLights give me my lights
 ListLights list my lights
-
-
+ListScenes for my lights
 
 AMAZON.StopIntent quit
 AMAZON.StopIntent stop

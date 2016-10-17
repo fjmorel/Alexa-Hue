@@ -1,6 +1,6 @@
 LIGHTS
-bedroom lights
-fireplace lights
+living room lights
+all lights
 floor light
 overhead light
 
@@ -9,6 +9,9 @@ Saturation
 Brightness
 
 COLOR
+Light Orange
+Orange
+Dark Orange
 Light Red
 Red
 Dark Red
@@ -55,6 +58,7 @@ nine
 ten
 
 SCENE
+mood
 morning
 evening
 dinner
