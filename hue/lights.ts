@@ -27,6 +27,9 @@ const TEMPERATURES: IMap<number> = {
 		energizing: 136
 };
 
+/**
+ * Create light state for bulbs based on given properties from Alexa
+ */
 export function buildLightState(command: ISlots) {
 	let state = Hue.lightState.create().on();
 	let color = command.Color;

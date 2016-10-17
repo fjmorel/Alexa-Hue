@@ -8,6 +8,7 @@ function readUsername() {
     }
     catch (ex) {
         console.log("Failed to read Bridge username from file");
+        return "";
     }
 }
 function register(IP) {
@@ -17,9 +18,6 @@ function register(IP) {
         return newUser;
     });
 }
-/**
- * Find bridge, authorize if necessary, and connect
- */
 function getBridge() {
     return hue.nupnpSearch().then(function (bridges) {
         if (!bridges || !bridges[0]) {
@@ -28,7 +26,6 @@ function getBridge() {
         let ip = bridges[0].ipaddress;
         let user = readUsername();
         let promise;
-        //First load username from file. Register if there's no file.
         if (!user)
             promise = register(ip);
         else

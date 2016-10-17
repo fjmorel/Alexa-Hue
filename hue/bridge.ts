@@ -8,6 +8,7 @@ function readUsername(): string | undefined {
 		return fs.readFileSync(configFilename).toString();
 	} catch (ex) {
 		console.log("Failed to read Bridge username from file");
+		return "";
 	}
 }
 

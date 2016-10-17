@@ -11,6 +11,10 @@
 		"strictNullChecks": true,
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": true
+		"noUnusedParameters": true,
+		"forceConsistentCasingInFileNames": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"removeComments": true
 	}
 }
