@@ -5,15 +5,27 @@ const Alexa = require('./alexa');
 let bridge = bridge_1.getBridge();
 const PORT = 4567;
 http.createServer(handleRequest).listen(PORT, function () {
-    console.log("Server listening on: http://localhost:%s", PORT);
+    console.log("Server listening on: http://localhost:%s/lights", PORT);
 });
 function handleRequest(request, response) {
-    var body = [];
-    request.on("error", (err) => {
-        console.error(err);
-    }).on('data', function (chunk) {
-        body.push(chunk);
-    }).on('end', function () {
+    try {
+        if (!request.url || request.url.indexOf("/lights") < 0)
+            throw new Error("Invalid URL");
+        var body = [];
+        request.on("error", (err) => {
+            console.error(err);
+        }).on('data', function (chunk) {
+            body.push(chunk);
+        }).on('end', processRequest.bind({}, body, response));
+    }
+    catch (ex) {
+        console.log(new Date());
+        console.error(ex);
+        response.end(JSON.stringify(Alexa.say("Invalid request")));
+    }
+}
+function processRequest(body, response) {
+    try {
         let command = JSON.parse(Buffer.concat(body).toString()).request.intent;
         let intent = command.name;
         let options = Alexa.getSlotValues(command.slots);
@@ -33,5 +45,8 @@ function handleRequest(request, response) {
         }).then(function (result) {
             response.end(JSON.stringify(result));
         });
-    });
+    }
+    catch (ex) {
+        response.end(JSON.stringify(Alexa.say("Could not understand request")));
+    }
 }
