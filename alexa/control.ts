@@ -1,5 +1,5 @@
 import { HueApi } from "node-hue-api";
-import { say, IAlexaResponse, DEFAULT_SUCCESS_RESPONSE } from "./";
+import { say, IAlexaResponse, getSuccessResponse } from "./";
 import { buildLightState } from '../hue/lights'
 
 /**
@@ -7,35 +7,35 @@ import { buildLightState } from '../hue/lights'
  */
 export function controlLights(bridge: HueApi, command: ISlots): Promise<IAlexaResponse> {
 	if (command.Scene) {
-		let name = command.Scene.toLowerCase().replace(' seen', ' scene').replace(" scene", "");
+		const name = command.Scene.toLowerCase().replace(' seen', ' scene').replace(" scene", "");
 		//TODO get scene id from name
 		return bridge.getScenes().then(scenes => {
-			let scene = scenes.filter(scene => scene.name.toLowerCase() === name)[0];
+			const scene = scenes.filter(scene => scene.name.toLowerCase() === name)[0];
 			if (scene) bridge.activateScene(scene.id);
 			else return say("Scene not found. Ask me for a list of scenes!");
 
-			if (name.indexOf("mood") > -1) return say("Setting the mood.");
-			return say(DEFAULT_SUCCESS_RESPONSE);
+			if (name.indexOf("mood") > -1) return say(["Setting the mood", "Good luck tonight"][Math.round(Math.random())]);
+			return say(getSuccessResponse());
 		});
 	}
 
-	let state = buildLightState(command);
+	const state = buildLightState(command);
 	let lights = command.Lights;
 
 	//TODO ask for light if none specified or default to all always
 	if (lights) lights = lights.replace('like', 'light');
 	if (lights === "light" || lights === "lights" || !lights) lights = "all lights";
 	if (lights.indexOf("lights") > -1) {
-		let groupName = lights.replace(" lights", "");
+		const groupName = lights.replace(" lights", "");
 		if (groupName === "all") {
-			return bridge.setGroupLightState(0, state).then(() => say(DEFAULT_SUCCESS_RESPONSE));
+			return bridge.setGroupLightState(0, state).then(() => say(getSuccessResponse()));
 		}
 		return bridge.getGroups().then(groups => {
-			let group = groups.filter(group => group.name.toLowerCase() === groupName)[0];
+			const group = groups.filter(group => group.name.toLowerCase() === groupName)[0];
 			if (group) {
 
 				bridge.setGroupLightState(group.id, state);
-				return say(DEFAULT_SUCCESS_RESPONSE);
+				return say(getSuccessResponse());
 			}
 			return say("Does not compute. There is no group named '" + lights + "'");
 		});

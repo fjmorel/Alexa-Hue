@@ -1,7 +1,16 @@
 export { listScenes, listGroups, listLights } from "./lists";
 export { controlLights } from "./control";
 
-export const DEFAULT_SUCCESS_RESPONSE = "As you wish.";
+const SUCCESS_RESPONSES = [
+	"As you wish.",
+	"Your wish is my command.",
+	"I got this",
+	"Here I am, brain the size of a planet, and you ask me to change the lights"
+];
+
+export function getSuccessResponse() {
+	return SUCCESS_RESPONSES[Math.round(Math.random() * (SUCCESS_RESPONSES.length - 1))];
+}
 
 /**
  * Send Alexa a phrase to say and a card for the app
@@ -10,7 +19,7 @@ export const DEFAULT_SUCCESS_RESPONSE = "As you wish.";
  * @returns {IAlexaResponse} Response to Alexa
  */
 export function sayWithCard(cardTitle: string, cardList: string[]): IAlexaResponse {
-	let response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
+	const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
 	response.response.card = {
 		type: "Simple", title: cardTitle, content: cardList.join("\r\n")
 	};
@@ -41,7 +50,7 @@ export function say(say: string): IAlexaResponse {
  * @returns Object with slot values from Alexa request
  */
 export function getSlotValues(slots: IMap<IAlexaSlot>) {
-	let options: IMap<string> = {};
+	const options: IMap<string> = {};
 	if (slots) Object.keys(slots).forEach(key => {
 		if (slots[key].value) options[key] = slots[key].value;
 	});

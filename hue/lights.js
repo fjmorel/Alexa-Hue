@@ -25,7 +25,7 @@ const TEMPERATURES = {
     energizing: 136
 };
 function buildLightState(command) {
-    let state = Hue.lightState.create().on();
+    const state = Hue.lightState.create().on();
     let color = command.Color;
     if (color) {
         state.sat(220);

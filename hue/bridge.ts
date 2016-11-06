@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as hue from 'node-hue-api';
 
-let configFilename = "hue/alexa_hue_user";
+const configFilename = "hue/alexa_hue_user";
 
 function readUsername(): string | undefined {
 	try {
@@ -28,8 +28,8 @@ export function getBridge(): Promise<hue.HueApi> {
 		if (!bridges || !bridges[0]) {
 			throw "No bridge found";
 		}
-		let ip = bridges[0].ipaddress;
-		let user = readUsername();
+		const ip = bridges[0].ipaddress;
+		const user = readUsername();
 		let promise: Promise<any>;
 		//First load username from file. Register if there's no file.
 		if (!user) promise = register(ip);

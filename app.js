@@ -2,7 +2,7 @@
 const http = require('http');
 const bridge_1 = require("./hue/bridge");
 const Alexa = require('./alexa');
-let bridge = bridge_1.getBridge();
+const bridge = bridge_1.getBridge();
 const PORT = 4567;
 http.createServer(handleRequest).listen(PORT, function () {
     console.log("Server listening on: http://localhost:%s/lights", PORT);
@@ -25,11 +25,11 @@ function handleRequest(request, response) {
     }
 }
 function processRequest(body, response) {
+    response.writeHead(200, { 'Content-Type': 'application/json;charset=UTF-8' });
     try {
-        let command = JSON.parse(Buffer.concat(body).toString()).request.intent;
-        let intent = command.name;
-        let options = Alexa.getSlotValues(command.slots);
-        response.writeHead(200, { 'Content-Type': 'application/json;charset=UTF-8' });
+        const command = JSON.parse(Buffer.concat(body).toString()).request.intent;
+        const intent = command.name;
+        const options = Alexa.getSlotValues(command.slots);
         bridge.then(function (hueApi) {
             if (intent === "ListScenes")
                 return Alexa.listScenes(hueApi);

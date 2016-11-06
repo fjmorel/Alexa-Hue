@@ -5,9 +5,18 @@ exports.listGroups = lists_1.listGroups;
 exports.listLights = lists_1.listLights;
 var control_1 = require("./control");
 exports.controlLights = control_1.controlLights;
-exports.DEFAULT_SUCCESS_RESPONSE = "As you wish.";
+const SUCCESS_RESPONSES = [
+    "As you wish.",
+    "Your wish is my command.",
+    "I got this",
+    "Here I am, brain the size of a planet, and you ask me to change the lights"
+];
+function getSuccessResponse() {
+    return SUCCESS_RESPONSES[Math.round(Math.random() * (SUCCESS_RESPONSES.length - 1))];
+}
+exports.getSuccessResponse = getSuccessResponse;
 function sayWithCard(cardTitle, cardList) {
-    let response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
+    const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
     response.response.card = {
         type: "Simple", title: cardTitle, content: cardList.join("\r\n")
     };
@@ -28,7 +37,7 @@ function say(say) {
 }
 exports.say = say;
 function getSlotValues(slots) {
-    let options = {};
+    const options = {};
     if (slots)
         Object.keys(slots).forEach(key => {
             if (slots[key].value)

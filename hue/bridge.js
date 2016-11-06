@@ -1,7 +1,7 @@
 "use strict";
 const fs = require('fs');
 const hue = require('node-hue-api');
-let configFilename = "hue/alexa_hue_user";
+const configFilename = "hue/alexa_hue_user";
 function readUsername() {
     try {
         return fs.readFileSync(configFilename).toString();
@@ -23,8 +23,8 @@ function getBridge() {
         if (!bridges || !bridges[0]) {
             throw "No bridge found";
         }
-        let ip = bridges[0].ipaddress;
-        let user = readUsername();
+        const ip = bridges[0].ipaddress;
+        const user = readUsername();
         let promise;
         if (!user)
             promise = register(ip);

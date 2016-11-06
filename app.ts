@@ -5,7 +5,7 @@ import { getBridge } from "./hue/bridge";
 import * as Alexa from './alexa'
 
 //Get connection to Hue bridge
-let bridge = getBridge();
+const bridge = getBridge();
 
 //Create web server
 const PORT = 4567;
@@ -31,12 +31,13 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
 }
 
 function processRequest(body: any[], response: http.ServerResponse) {
-	try {
-		let command = (<Alexa.IAlexaRequest>JSON.parse(Buffer.concat(body).toString())).request.intent;
-		let intent = command.name;
-		let options = Alexa.getSlotValues(command.slots);
+	response.writeHead(200, { 'Content-Type': 'application/json;charset=UTF-8' });
 
-		response.writeHead(200, { 'Content-Type': 'application/json;charset=UTF-8' });
+	try {
+		const command = (<Alexa.IAlexaRequest>JSON.parse(Buffer.concat(body).toString())).request.intent;
+		const intent = command.name;
+		const options = Alexa.getSlotValues(command.slots);
+
 		bridge.then(function (hueApi) {
 			if (intent === "ListScenes") return Alexa.listScenes(hueApi);
 			else if (intent === "ListGroups") return Alexa.listGroups(hueApi);
