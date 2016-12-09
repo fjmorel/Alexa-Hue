@@ -17,17 +17,17 @@
 		- [ ] If no light/group/scene specified, ask and wait for answer in same session
 			- [ ] Cancel/Stop Intent 
 		- [x] Substitute like(s)/light(s)
-		- [ ] lights => all lights
+		- [x] lights => all lights
 		- [ ] Require "[name] light" or "[name] lights" or "[name] group"
 		- [ ] If no match, respond with that
 	- [ ] Light/Group Adjustment
 		- [x] Color
 			- [x] Dark/light (saturation 195, 220, 255)
-			- [x] Colors = {red: 65280, pink: 56100, purple: 52180, violet: 47188, blue: 46920, turquoise: 31146, green: 25500, yellow: 12750, orange: 8618}
-     	- [x] Color Temperature = {candle: 500, relax: 467, relaxing: 467, reading: 346, neutral: 300, concentrate: 231, energize: 136, energizing: 136}
+			- [x] Colors: Red, Pink, Purple, Violet, Blue, Turquoise, Green, Yellow, Orange
+     	- [x] Color Temperature = Candle, Relax/Relaxing, Reading, Neutral, Concentrate, Energize/Energizing
 		- [x] Brightness
-		- [x] Saturation 
-		- [ ] On/Off
+		- [x] Saturation
+		- [-] On/Off (will not implement since Alexa already handles on/off)
 		- [ ] Color loop
 			- [ ] long/short alert
 			- [ ] start/stop
