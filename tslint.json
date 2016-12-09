@@ -1,0 +1,22 @@
+{
+	"extends": "tslint:latest",
+	"rules": {
+		"indent": [
+			true,
+			"tabs"
+		],
+		"ordered-imports": [
+			false
+		],
+		"object-literal-sort-keys": false,
+		"trailing-comma": [
+			false
+		],
+		"eofline": false,
+		"no-reference": false,
+		"curly": false,
+		"no-console": [
+			false
+		]
+	}
+}

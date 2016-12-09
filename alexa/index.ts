@@ -5,7 +5,7 @@ const SUCCESS_RESPONSES = [
 	"As you wish.",
 	"Your wish is my command.",
 	"I got this",
-	"Here I am, brain the size of a planet, and you ask me to change the lights"
+	"Here I am, brain the size of a planet, and you ask me to change the goddamn lights"
 ];
 
 export function getSuccessResponse() {
@@ -33,10 +33,10 @@ export function sayWithCard(cardTitle: string, cardList: string[]): IAlexaRespon
  */
 export function say(say: string): IAlexaResponse {
 	return {
-		version: '2.0',
+		version: "2.0",
 		response: {
 			outputSpeech: {
-				type: 'PlainText',
+				type: "PlainText",
 				text: say
 			},
 			shouldEndSession: true
@@ -51,7 +51,7 @@ export function say(say: string): IAlexaResponse {
  */
 export function getSlotValues(slots: IMap<IAlexaSlot>) {
 	const options: IMap<string> = {};
-	if (slots) Object.keys(slots).forEach(key => {
+	if (slots) Object.keys(slots).forEach((key) => {
 		if (slots[key].value) options[key] = slots[key].value;
 	});
 	return options;
@@ -73,7 +73,7 @@ export interface IAlexaRequest {
 			userId: string;
 			accessToken: string;
 		}
-	},
+	};
 	request: {
 		type: "IntentRequest";
 		requestId: string;
@@ -82,14 +82,14 @@ export interface IAlexaRequest {
 			name: string;
 			slots: IMap<IAlexaSlot>;
 		}
-	}
+	};
 }
 
 /**
  * Properties needed on web response to Alexa
  */
 export interface IAlexaResponse {
-	version: string,
+	version: string;
 	response: {
 		outputSpeech: ISpeech,
 		reprompt?: {
@@ -99,7 +99,7 @@ export interface IAlexaResponse {
 		card?: {
 			type: "Simple", title: string, content: string
 		}
-	}
+	};
 }
 
 /**
@@ -114,7 +114,6 @@ interface IAlexaSlot {
  * Something to make Alexa say
  */
 interface ISpeech {
-	type: 'PlainText';
+	type: "PlainText";
 	text: string;
 }
-

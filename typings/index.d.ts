@@ -1,5 +1,5 @@
 /// <reference types="node" />
-/// <reference path="hue.d.ts" />
+/// <reference types="node-hue-api" />
 
 interface IMap<T> {
 	[key: string]: T
