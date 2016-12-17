@@ -5,7 +5,8 @@ const SUCCESS_RESPONSES = [
 	"As you wish.",
 	"Your wish is my command.",
 	"I got this",
-	"Here I am, brain the size of a planet, and you ask me to change the goddamn lights"
+	"Here I am, brain the size of a planet, and you ask me to change the goddamn lights",
+	"Aye aye captain"
 ];
 
 export function getSuccessResponse() {

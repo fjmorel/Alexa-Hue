@@ -1,5 +1,5 @@
 "use strict";
-const Hue = require('node-hue-api');
+const Hue = require("node-hue-api");
 const LEVELS = [
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"
 ];

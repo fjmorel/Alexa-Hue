@@ -9,7 +9,8 @@ const SUCCESS_RESPONSES = [
     "As you wish.",
     "Your wish is my command.",
     "I got this",
-    "Here I am, brain the size of a planet, and you ask me to change the lights"
+    "Here I am, brain the size of a planet, and you ask me to change the goddamn lights",
+    "Aye aye captain"
 ];
 function getSuccessResponse() {
     return SUCCESS_RESPONSES[Math.round(Math.random() * (SUCCESS_RESPONSES.length - 1))];
@@ -25,10 +26,10 @@ function sayWithCard(cardTitle, cardList) {
 exports.sayWithCard = sayWithCard;
 function say(say) {
     return {
-        version: '2.0',
+        version: "2.0",
         response: {
             outputSpeech: {
-                type: 'PlainText',
+                type: "PlainText",
                 text: say
             },
             shouldEndSession: true
@@ -39,7 +40,7 @@ exports.say = say;
 function getSlotValues(slots) {
     const options = {};
     if (slots)
-        Object.keys(slots).forEach(key => {
+        Object.keys(slots).forEach((key) => {
             if (slots[key].value)
                 options[key] = slots[key].value;
         });
