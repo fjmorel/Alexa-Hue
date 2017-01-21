@@ -12,9 +12,15 @@ const SUCCESS_RESPONSES = [
 	"Here I am, brain the size of a planet, and you ask me to change the goddamn lights"
 ];
 
-export function sayResult(success: boolean) {
+/**
+ * Make Alexa say success or failure message
+ * @param {boolean} success Whether the request worked
+ * @param {boolean} stayOn Wehther to continue session
+ * @returns {IAlexaResponse} Response to Alexa
+ */
+export function sayResult(success: boolean, stayOn?: boolean) {
 	const source = success ? SUCCESS_RESPONSES : FAILURE_RESPONSES;
-	return say(source[Math.round(Math.random() * (source.length - 1))]);
+	return say(source[Math.round(Math.random() * (source.length - 1))], stayOn);
 }
 
 /**
@@ -24,7 +30,7 @@ export function sayResult(success: boolean) {
  * @returns {IAlexaResponse} Response to Alexa
  */
 export function sayWithCard(cardTitle: string, cardList: string[]): IAlexaResponse {
-	const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
+	const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.", true);
 	response.response.card = {
 		type: "Simple", title: cardTitle, content: cardList.join("\r\n")
 	};
@@ -34,9 +40,10 @@ export function sayWithCard(cardTitle: string, cardList: string[]): IAlexaRespon
 /**
  * Make Alexa say something in response to user request
  * @param {string} say What to make Alexa say
+ * @param {boolean} stayOn Wehther to continue session
  * @returns {IAlexaResponse} Response to Alexa
  */
-export function say(say: string): IAlexaResponse {
+export function say(say: string, stayOn?: boolean): IAlexaResponse {
 	return {
 		version: "2.0",
 		response: {
@@ -44,7 +51,7 @@ export function say(say: string): IAlexaResponse {
 				type: "PlainText",
 				text: say
 			},
-			shouldEndSession: false
+			shouldEndSession: !stayOn
 		}
 	};
 }

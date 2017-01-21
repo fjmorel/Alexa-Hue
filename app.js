@@ -26,10 +26,12 @@ function handleRequest(request, response) {
 function processRequest(body, response) {
     response.writeHead(200, { "Content-Type": "application/json;charset=UTF-8" });
     try {
-        const request = JSON.parse(Buffer.concat(body).toString()).request;
+        const obj = JSON.parse(Buffer.concat(body).toString());
+        const stayOn = !obj.session.new;
+        const request = obj.request;
         switch (request.type) {
             case "LaunchRequest":
-                response.end(JSON.stringify(Alexa.say("You can ask me to set the lights to a color or specific scene. For example, set the lights to blue. How may I be of assistance?")));
+                response.end(JSON.stringify(Alexa.say("You can ask me to set the lights to a color or specific scene. For example, set the lights to blue. How may I be of assistance?", true)));
                 break;
             case "SessionEndedRequest":
                 response.end(JSON.stringify(Alexa.say("Goodbye")));
@@ -48,7 +50,10 @@ function processRequest(body, response) {
                         default:
                             return new Promise((resolve) => { resolve(Alexa.say("Why you make no sense.")); });
                     }
-                }).then((result) => { response.end(JSON.stringify(result)); });
+                }).then((result) => {
+                    result.response.shouldEndSession = !stayOn;
+                    response.end(JSON.stringify(result));
+                });
         }
     }
     catch (ex) {

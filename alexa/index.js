@@ -14,20 +14,20 @@ const SUCCESS_RESPONSES = [
     "I got this",
     "Here I am, brain the size of a planet, and you ask me to change the goddamn lights"
 ];
-function sayResult(success) {
+function sayResult(success, stayOn) {
     const source = success ? SUCCESS_RESPONSES : FAILURE_RESPONSES;
-    return say(source[Math.round(Math.random() * (source.length - 1))]);
+    return say(source[Math.round(Math.random() * (source.length - 1))], stayOn);
 }
 exports.sayResult = sayResult;
 function sayWithCard(cardTitle, cardList) {
-    const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
+    const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.", true);
     response.response.card = {
         type: "Simple", title: cardTitle, content: cardList.join("\r\n")
     };
     return response;
 }
 exports.sayWithCard = sayWithCard;
-function say(say) {
+function say(say, stayOn) {
     return {
         version: "2.0",
         response: {
@@ -35,7 +35,7 @@ function say(say) {
                 type: "PlainText",
                 text: say
             },
-            shouldEndSession: false
+            shouldEndSession: !stayOn
         }
     };
 }
