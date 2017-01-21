@@ -19,9 +19,8 @@ function handleRequest(request, response) {
         }).on("end", processRequest.bind({}, body, response));
     }
     catch (ex) {
-        console.log(new Date());
-        console.error(ex);
-        response.end(JSON.stringify(Alexa.say("Invalid request")));
+        console.error(ex.message);
+        response.end(JSON.stringify(Alexa.sayResult(false)));
     }
 }
 function processRequest(body, response) {
@@ -29,7 +28,6 @@ function processRequest(body, response) {
     try {
         const command = JSON.parse(Buffer.concat(body).toString()).request.intent;
         const intent = command.name;
-        const options = Alexa.getSlotValues(command.slots);
         bridge.then((hueApi) => {
             switch (intent) {
                 case "ListScenes":
@@ -39,13 +37,13 @@ function processRequest(body, response) {
                 case "ListLights":
                     return Alexa.listLights(hueApi);
                 case "ControlLights":
-                    return Alexa.controlLights(hueApi, options);
+                    return Alexa.controlLights(hueApi, Alexa.getSlotValues(command.slots));
                 default:
                     return new Promise((resolve) => { resolve(Alexa.say("Why you make no sense.")); });
             }
         }).then((result) => { response.end(JSON.stringify(result)); });
     }
     catch (ex) {
-        response.end(JSON.stringify(Alexa.say("Could not understand request")));
+        response.end(JSON.stringify(Alexa.sayResult(false)));
     }
 }

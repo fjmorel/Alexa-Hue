@@ -1,16 +1,20 @@
 export { listScenes, listGroups, listLights } from "./lists";
 export { controlLights } from "./control";
 
+const FAILURE_RESPONSES = [
+	"I'm sorry. I'm afraid I can't do that"
+];
+
 const SUCCESS_RESPONSES = [
 	"As you wish.",
 	"Your wish is my command.",
 	"I got this",
-	"Here I am, brain the size of a planet, and you ask me to change the goddamn lights",
-	"Aye aye captain"
+	"Here I am, brain the size of a planet, and you ask me to change the goddamn lights"
 ];
 
-export function getSuccessResponse() {
-	return SUCCESS_RESPONSES[Math.round(Math.random() * (SUCCESS_RESPONSES.length - 1))];
+export function sayResult(success: boolean) {
+	const source = success ? SUCCESS_RESPONSES : FAILURE_RESPONSES;
+	return say(source[Math.round(Math.random() * (source.length - 1))]);
 }
 
 /**
@@ -64,7 +68,7 @@ export function getSlotValues(slots: IMap<IAlexaSlot>) {
 export interface IAlexaRequest {
 	version: string;
 	session: {
-		"new": boolean;
+		new: boolean;
 		sessionId: string;
 		application: {
 			applicationId: string;
@@ -106,7 +110,7 @@ export interface IAlexaResponse {
 /**
  * Slot on Alexa web request data
  */
-interface IAlexaSlot {
+export interface IAlexaSlot {
 	name: string;
 	value: string;
 }

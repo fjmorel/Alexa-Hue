@@ -5,7 +5,7 @@ interface IMap<T> {
 	[key: string]: T
 }
 
-interface ISlots {
+interface IControlSlots {
 	Lights?: string;
 	Brightness?: string;
 	SaveScene?: string;

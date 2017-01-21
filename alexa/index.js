@@ -5,17 +5,20 @@ exports.listGroups = lists_1.listGroups;
 exports.listLights = lists_1.listLights;
 var control_1 = require("./control");
 exports.controlLights = control_1.controlLights;
+const FAILURE_RESPONSES = [
+    "I'm sorry. I'm afraid I can't do that"
+];
 const SUCCESS_RESPONSES = [
     "As you wish.",
     "Your wish is my command.",
     "I got this",
-    "Here I am, brain the size of a planet, and you ask me to change the goddamn lights",
-    "Aye aye captain"
+    "Here I am, brain the size of a planet, and you ask me to change the goddamn lights"
 ];
-function getSuccessResponse() {
-    return SUCCESS_RESPONSES[Math.round(Math.random() * (SUCCESS_RESPONSES.length - 1))];
+function sayResult(success) {
+    const source = success ? SUCCESS_RESPONSES : FAILURE_RESPONSES;
+    return say(source[Math.round(Math.random() * (source.length - 1))]);
 }
-exports.getSuccessResponse = getSuccessResponse;
+exports.sayResult = sayResult;
 function sayWithCard(cardTitle, cardList) {
     const response = say("I've sent a card listing your " + cardTitle + " to the Alexa app.");
     response.response.card = {
