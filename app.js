@@ -26,22 +26,30 @@ function handleRequest(request, response) {
 function processRequest(body, response) {
     response.writeHead(200, { "Content-Type": "application/json;charset=UTF-8" });
     try {
-        const command = JSON.parse(Buffer.concat(body).toString()).request.intent;
-        const intent = command.name;
-        bridge.then((hueApi) => {
-            switch (intent) {
-                case "ListScenes":
-                    return Alexa.listScenes(hueApi);
-                case "ListGroups":
-                    return Alexa.listGroups(hueApi);
-                case "ListLights":
-                    return Alexa.listLights(hueApi);
-                case "ControlLights":
-                    return Alexa.controlLights(hueApi, Alexa.getSlotValues(command.slots));
-                default:
-                    return new Promise((resolve) => { resolve(Alexa.say("Why you make no sense.")); });
-            }
-        }).then((result) => { response.end(JSON.stringify(result)); });
+        const request = JSON.parse(Buffer.concat(body).toString()).request;
+        switch (request.type) {
+            case "LaunchRequest":
+                response.end(JSON.stringify(Alexa.say("You can ask me to set the lights to a color or specific scene. For example, set the lights to blue. How may I be of assistance?")));
+                break;
+            case "SessionEndedRequest":
+                response.end(JSON.stringify(Alexa.say("Goodbye")));
+                break;
+            default:
+                bridge.then((hueApi) => {
+                    switch (request.intent.name) {
+                        case "ListScenes":
+                            return Alexa.listScenes(hueApi);
+                        case "ListGroups":
+                            return Alexa.listGroups(hueApi);
+                        case "ListLights":
+                            return Alexa.listLights(hueApi);
+                        case "ControlLights":
+                            return Alexa.controlLights(hueApi, Alexa.getSlotValues(request.intent.slots));
+                        default:
+                            return new Promise((resolve) => { resolve(Alexa.say("Why you make no sense.")); });
+                    }
+                }).then((result) => { response.end(JSON.stringify(result)); });
+        }
     }
     catch (ex) {
         response.end(JSON.stringify(Alexa.sayResult(false)));

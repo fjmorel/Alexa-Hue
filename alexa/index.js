@@ -35,7 +35,7 @@ function say(say) {
                 type: "PlainText",
                 text: say
             },
-            shouldEndSession: true
+            shouldEndSession: false
         }
     };
 }
