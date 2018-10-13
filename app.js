@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const bridge_1 = require("./hue/bridge");
 const Alexa = require("./alexa");

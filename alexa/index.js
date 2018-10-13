@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var lists_1 = require("./lists");
 exports.listScenes = lists_1.listScenes;
 exports.listGroups = lists_1.listGroups;
@@ -27,13 +28,13 @@ function sayWithCard(cardTitle, cardList) {
     return response;
 }
 exports.sayWithCard = sayWithCard;
-function say(say, stayOn) {
+function say(message, stayOn) {
     return {
         version: "2.0",
         response: {
             outputSpeech: {
                 type: "PlainText",
-                text: say
+                text: message
             },
             shouldEndSession: !stayOn
         }

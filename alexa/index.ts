@@ -18,7 +18,7 @@ const SUCCESS_RESPONSES = [
  * @param {boolean} stayOn Wehther to continue session
  * @returns {IAlexaResponse} Response to Alexa
  */
-export function sayResult(success: boolean, stayOn?: boolean) {
+export function sayResult(success: boolean, stayOn?: boolean): IAlexaResponse {
 	const source = success ? SUCCESS_RESPONSES : FAILURE_RESPONSES;
 	return say(source[Math.round(Math.random() * (source.length - 1))], stayOn);
 }
@@ -39,17 +39,17 @@ export function sayWithCard(cardTitle: string, cardList: string[]): IAlexaRespon
 
 /**
  * Make Alexa say something in response to user request
- * @param {string} say What to make Alexa say
+ * @param {string} message What to make Alexa say
  * @param {boolean} stayOn Wehther to continue session
  * @returns {IAlexaResponse} Response to Alexa
  */
-export function say(say: string, stayOn?: boolean): IAlexaResponse {
+export function say(message: string, stayOn?: boolean): IAlexaResponse {
 	return {
 		version: "2.0",
 		response: {
 			outputSpeech: {
 				type: "PlainText",
-				text: say
+				text: message
 			},
 			shouldEndSession: !stayOn
 		}
@@ -58,13 +58,13 @@ export function say(say: string, stayOn?: boolean): IAlexaResponse {
 
 /**
  * Parses Alexa request for any relevant values
- * @param {IMap<IAlexaSlot>} slots
+ * @param {Record<string, IAlexaSlot>} slots
  * @returns Object with slot values from Alexa request
  */
-export function getSlotValues(slots: IMap<IAlexaSlot>) {
-	const options: IMap<string> = {};
-	if (slots) Object.keys(slots).forEach((key) => {
-		if (slots[key].value) options[key] = slots[key].value;
+export function getSlotValues(slots: Record<string, IAlexaSlot>) {
+	const options: Record<string, string> = {};
+	if(slots) Object.keys(slots).forEach((key) => {
+		if(slots[key].value) options[key] = slots[key].value;
 	});
 	return options;
 }

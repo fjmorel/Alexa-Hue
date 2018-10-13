@@ -16,14 +16,14 @@ http.createServer(handleRequest).listen(PORT, () => {
 // We need a function which handles requests and send response
 function handleRequest(request: http.IncomingMessage, response: http.ServerResponse) {
 	try {
-		if (!request.url || request.url.indexOf("/lights") < 0) throw new Error("Invalid URL");
+		if(!request.url || request.url.indexOf("/lights") < 0) throw new Error("Invalid URL");
 		const body: any[] = [];
 		request.on("error", (err: Error) => {
 			console.error(err);
 		}).on("data", (chunk: any) => {
 			body.push(chunk);
 		}).on("end", processRequest.bind({}, body, response));
-	} catch (ex) {
+	} catch(ex) {
 		console.error(ex.message);
 		response.end(JSON.stringify(Alexa.sayResult(false)));
 	}
@@ -37,7 +37,7 @@ function processRequest(body: any[], response: http.ServerResponse) {
 		const stayOn = !obj.session.new;
 		const request = obj.request;
 
-		switch (request.type) {
+		switch(request.type) {
 			case "LaunchRequest":
 				response.end(JSON.stringify(Alexa.say("You can ask me to set the lights to a color or specific scene. For example, set the lights to blue. How may I be of assistance?", true)));
 				break;
@@ -46,7 +46,7 @@ function processRequest(body: any[], response: http.ServerResponse) {
 				break;
 			default:
 				bridge.then((hueApi) => {
-					switch (request.intent.name) {
+					switch(request.intent.name) {
 						case "ListScenes":
 							return Alexa.listScenes(hueApi);
 						case "ListGroups":
@@ -56,14 +56,14 @@ function processRequest(body: any[], response: http.ServerResponse) {
 						case "ControlLights":
 							return Alexa.controlLights(hueApi, Alexa.getSlotValues(request.intent.slots));
 						default:
-							return new Promise((resolve) => { resolve(Alexa.say("Why you make no sense.")); });
+							return new Promise<Alexa.IAlexaResponse>((resolve) => { resolve(Alexa.say("Why you make no sense.")); });
 					}
 				}).then((result) => {
 					result.response.shouldEndSession = !stayOn;
 					response.end(JSON.stringify(result));
 				});
 		}
-	} catch (ex) {
+	} catch(ex) {
 		response.end(JSON.stringify(Alexa.sayResult(false)));
 	}
 }

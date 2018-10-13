@@ -4,7 +4,7 @@ const LEVELS = [
 	"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"
 ];
 
-const COLORS: IMap<number> = {
+const COLORS: Record<string, Color> = {
 	red: 65280,
 	pink: 56100,
 	purple: 52180,
@@ -16,7 +16,7 @@ const COLORS: IMap<number> = {
 	orange: 8618
 };
 
-const TEMPERATURES: IMap<number> = {
+const TEMPERATURES: Record<string, WhiteTemperature> = {
 	candle: 500,
 	relax: 467,
 	relaxing: 467,
@@ -33,16 +33,16 @@ const TEMPERATURES: IMap<number> = {
 export function buildLightState(command: IControlSlots) {
 	const state = Hue.lightState.create().on();
 	let color = command.Color;
-	if (color) {
+	if(color) {
 		state.sat(220);
-		if (color.indexOf("dark") > -1) state.sat(255);
-		if (color.indexOf("light") > -1) state.sat(195);
+		if(color.indexOf("dark") > -1) state.sat(255);
+		if(color.indexOf("light") > -1) state.sat(195);
 		color = color.replace("dark ", "").replace("light ", "");
-		if (COLORS[color]) state.hue(COLORS[color]);
-		if (TEMPERATURES[color]) state.ct(TEMPERATURES[color]);
+		if(COLORS[color]) state.hue(COLORS[color]);
+		if(TEMPERATURES[color]) state.ct(TEMPERATURES[color]);
 	}
-	if (command.Brightness) state.bri(LEVELS.indexOf(command.Brightness.toLowerCase()) / 10 * 255);
-	if (command.Saturation) state.sat(LEVELS.indexOf(command.Saturation.toLowerCase()) / 10 * 255);
+	if(command.Brightness) state.bri(LEVELS.indexOf(command.Brightness.toLowerCase()) / 10 * 255);
+	if(command.Saturation) state.sat(LEVELS.indexOf(command.Saturation.toLowerCase()) / 10 * 255);
 
 	return state;
 }
